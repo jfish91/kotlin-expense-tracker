@@ -14,7 +14,7 @@ import java.util.UUID
 @Table(name = "expenses")   // indicates which table it should be stored in
 data class Expense(
     @Id                     // indicates it is the primary key for this table
-    @GeneratedValue         // generates the UUID automatically
+    @GeneratedValue         // generates the UUID automatically when expense is created
     val id: UUID? = null,
 
     val vendor: String,

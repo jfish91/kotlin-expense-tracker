@@ -2,6 +2,9 @@ package com.example.expense_tracker
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.time.Month
+import java.util.Optional
+import java.util.UUID
+import com.example.expense_tracker.exception.ExpenseNotFoundException
 
 // repository abilities:
 //save()
@@ -32,6 +35,32 @@ class ExpenseService(
 
         repository.save(expense)
         return expense
+    }
+    fun getExpense(id: UUID): Expense {
+        return repository.findById(id).orElseThrow { ExpenseNotFoundException(id)}
+    }
+
+    fun deleteExpense(id: UUID): String {
+        val expense = getExpense(id)
+        repository.deleteById(id)
+        return "Deleted  $id  successfully"
+         //.orElseThrow (ExpenseNotFoundException(id))
+    }
+
+    fun updateExpense(id: UUID, request: UpdateExpenseRequest): Expense {
+        val currentExpense = getExpense(id)
+        val newExpense = Expense(
+            id = currentExpense.id,
+            vendor = request.vendor,
+            description = request.description ?: "",
+            amount = request.amount,
+            category = request.category,
+            date = request.date,
+            createdAt = currentExpense.createdAt,
+        )
+        println(newExpense)
+        repository.save(newExpense)
+        return newExpense
     }
 
 //    fun getTotal(): Double {
