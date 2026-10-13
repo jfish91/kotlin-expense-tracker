@@ -5,6 +5,7 @@ import java.time.Month
 import java.util.Optional
 import java.util.UUID
 import com.example.expense_tracker.exception.ExpenseNotFoundException
+import java.time.LocalDate
 
 // repository abilities:
 //save()
@@ -19,8 +20,19 @@ import com.example.expense_tracker.exception.ExpenseNotFoundException
 class ExpenseService(
     private val repository: ExpenseRepository
 ) {
-    fun getExpenses(): List<Expense> {
-        return repository.findAll()
+    fun getExpenses(
+        category:Category?,
+        minAmount:Double?,
+        fromDate: LocalDate?,
+        toDate: LocalDate?,
+    ): List<Expense> {
+        return repository.findExpenses(category, minAmount, fromDate, toDate)
+        // old logic when just filtering by categories
+//        return if (category != null) {
+//            repository.findByCategory(category)
+//        } else {
+//            repository.findAll()
+//        }
     }
 
     fun addExpense(request: CreateExpenseRequest): Expense {
@@ -58,9 +70,12 @@ class ExpenseService(
             date = request.date,
             createdAt = currentExpense.createdAt,
         )
-        println(newExpense)
         repository.save(newExpense)
         return newExpense
+    }
+
+    fun findByCategory(category: Category): List<Expense> {
+        return repository.findByCategory(category)
     }
 
 //    fun getTotal(): Double {

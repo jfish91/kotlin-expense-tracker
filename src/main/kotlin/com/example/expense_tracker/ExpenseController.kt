@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
+import java.time.LocalDate
 import java.util.Optional
 import java.util.UUID
 
@@ -19,8 +21,14 @@ import java.util.UUID
 class ExpenseController(private val expenseService: ExpenseService) {
 
     @GetMapping
-    fun getExpenses(): List<Expense> {
-        return expenseService.getExpenses()
+    fun getExpenses(
+        @RequestParam(required = false) category: Category?,
+        @RequestParam(required = false) minAmount: Double?,
+        @RequestParam(required = false) from: LocalDate?,
+        @RequestParam(required = false) to: LocalDate?,
+    ): List<Expense> {
+        println(from)
+        return expenseService.getExpenses(category, minAmount, from, to)
     }
 
     @GetMapping("/{id}")
@@ -44,7 +52,6 @@ class ExpenseController(private val expenseService: ExpenseService) {
         @PathVariable id: UUID,
         @Valid @RequestBody request: UpdateExpenseRequest
     ): Expense {
-        println("IN PUT MAPPING")
         return expenseService.updateExpense(id, request)
     }
 }
