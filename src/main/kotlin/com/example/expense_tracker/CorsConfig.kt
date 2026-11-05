@@ -13,7 +13,7 @@ class CorsConfig {
         return object : WebMvcConfigurer {
             override fun addCorsMappings(registry: CorsRegistry) {
                 registry.addMapping("/**")                          // applies config to all endpoints
-                    .allowedOrigins("http://localhost:5173")                    // allows requests from frontend
+                    .allowedOrigins("http://localhost:5173")                    // allows requests from frontend TODO: replace with env variable
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")  // lists allowed methods
                     .allowedHeaders("*")                                        // allows any headers
             }
