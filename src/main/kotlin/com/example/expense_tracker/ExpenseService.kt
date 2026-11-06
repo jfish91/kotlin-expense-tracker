@@ -45,8 +45,7 @@ class ExpenseService(
             createdAt = LocalDateTime.now(),
         )
 
-        repository.save(expense)
-        return expense
+        return repository.save(expense)
     }
     fun getExpense(id: UUID): Expense {
         return repository.findById(id).orElseThrow { ExpenseNotFoundException(id)}
