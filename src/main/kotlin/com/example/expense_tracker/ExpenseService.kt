@@ -20,6 +20,7 @@ import java.time.LocalDate
 class ExpenseService(
     private val repository: ExpenseRepository
 ) {
+
     fun getExpenses(
         category:Category?,
         minAmount:Double?,
@@ -47,6 +48,7 @@ class ExpenseService(
 
         return repository.save(expense)
     }
+
     fun getExpense(id: UUID): Expense {
         return repository.findById(id).orElseThrow { ExpenseNotFoundException(id)}
     }
@@ -54,7 +56,7 @@ class ExpenseService(
     fun deleteExpense(id: UUID): String {
         val expense = getExpense(id)
         repository.deleteById(id)
-        return "Deleted  $id  successfully"
+        return "Deleted $id successfully"
          //.orElseThrow (ExpenseNotFoundException(id))
     }
 
